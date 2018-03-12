@@ -1,11 +1,11 @@
-// require("dotenv").config(error, data);
+require("dotenv").config();
 var inquirer = require("inquirer");
 var keys = require("./keys.js");
+var Twitter = require('twitter');
 var Spotify = require('node-spotify-api');
 var request = require("request");
-
-// var spotify = new Spotify(keys.spotify);
-// var client = new twitter(keys.twitter);
+var spotify = new Spotify(keys.spotify);
+var client = new Twitter(keys.twitter);
 
 inquirer.prompt([{
     type: "list",
@@ -15,21 +15,30 @@ inquirer.prompt([{
 }, ]).then(function (command) {
     switch (command.LIRIBotCommands) {
         case "my-tweets":
-
             var params = {
                 screen_name: 'mhhlax22'
             };
-            keys.twitterKeys.get('statuses/user_timeline', params, function (error, tweets, response) {
-                console.log(tweets);
+            client.get('statuses/user_timeline', params, function (error, tweets, response) {
+                for (var i = 0; i < tweets.length; i++){
+                    console.log("-----------------------------------");
+                    console.log(tweets[i].text);
+                }
                 // console.log(error);
-
             });
             break;
 
         case "spotify-this-song":
-            console.log("this case is working");
-
-
+            // also could use .prompt and then .then to run function
+            var track = process.argv[2];
+            spotify.search({
+                type: 'track',
+                query: 'All the Small Things'
+            }, function (err, data) {
+                if (err) {
+                    return console.log('Error occurred: ' + err);
+                }
+                console.log(data);
+            });
             break;
 
         case "do-what-it-says":
@@ -40,25 +49,25 @@ inquirer.prompt([{
             })
             break;
         default:
-            console.log("error");
+            // console.log("error");
     }
     switch (command.LIRIBotCommands) {
         case "movie-this":
             var movie = process.argv[2];
             var queryURl = ("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=trilogy");
-
             // for (var i = 3; i < process.argv.length; i++) {
             //     movie += "+" + process.argv[i];
             // }
-
+            // also could use .prompt and then .then to run function
             request(queryURl, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
-                    // console.log(JSON.stringify(body, null, null, 6));
 
-                    // for (var i = 3; i < process.argv.length; i++) {
-                    //     movie += "+" + process.argv[i];
-                    // }
-                    // console.log(body)
+                    console.log(JSON.stringify(body, null, 2));
+
+                    for (var i = 3; i < process.argv.length; i++) {
+                        movie += "+" + process.argv[i];
+                    }
+
                     console.log("Title: " + JSON.parse(body).Title);
                     console.log("Year: " + JSON.parse(body).Year);
                     console.log("IMDB Rathing: " + JSON.parse(body).imdbRating);
