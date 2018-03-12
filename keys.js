@@ -1,18 +1,33 @@
-console.log('this is loaded');
 var twitter = require('twitter');
-var twitterKeys = new twitter ({
-    consumer_key: process.env.qod94TWNT5cf2T3Bzt6fp3TBT,
-    consumer_secret: process.env.ZW6QXJTsToGmsyYl9M0duXvLujyONF76IDiFL42FiiWhFap2X3,
-    
-    access_token_key: process.env. 150559200-MzOAZBZWIyWCYChj2AM06ewSgSyl6xrDUdDjUnmJ,
-    access_token_secret: process.env.ECl3Czm2kyfdLeykK2RgIbGyt6vfgS9lHlZy0V6zRXLi0
-})
+var Spotify = require('node-spotify-api');
 
-var spotify = {
-  id: process.env.SPOTIFY_ID,
-  secret: process.env.SPOTIFY_SECRET
+// var twitterKeys = new twitter ({
+//   consumer_key: process.env.TWITTER_CONSUMER_KEY,
+//   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+//   access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+//   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+// });
+
+// var spotify = {
+//   id: process.env.SPOTIFY_ID,
+//   secret: process.env.SPOTIFY_SECRET
+// };
+
+// console.log('this is loaded');
+
+var twitterKeys = exports.twitter = {
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 };
 
+var spotifyKeys = exports.spotify = {
+    id: process.env.SPOTIFY_ID,
+    secret: process.env.SPOTIFY_SECRET
+  };
+
 module.exports = {
-twitterKeys: twitterKeys
+twitterKeys: twitterKeys,
+spotifyKeys: spotifyKeys
 }
